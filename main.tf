@@ -18,6 +18,12 @@ provider "aws" {
   }
 }
 
-resource "aws_s3_bucket" "frontend" {
-  bucket = "audrey-banks-cloud-resume-frontend"
+provider "aws" {
+  alias  = "east1"
+  region = "us-east-1"
+  default_tags {
+    tags = {
+      Name = "Cloud Resume"
+    }
+  }
 }
