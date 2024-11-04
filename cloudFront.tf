@@ -1,6 +1,6 @@
 locals {
   domain = "audreybanks.com"
-  fqn = "www.audreybanks.com"
+  fqn    = "www.audreybanks.com"
 }
 
 data "aws_acm_certificate" "issued" {
