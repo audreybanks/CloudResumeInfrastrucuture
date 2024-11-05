@@ -21,6 +21,11 @@ resource "aws_cloudfront_origin_access_control" "oac_main_distribution" {
   signing_protocol                  = "sigv4"
 }
 
+data "aws_cloudfront_function" "redirectIndex" {
+  name  = "redirectIndex"
+  stage = "LIVE"
+}
+
 resource "aws_cloudfront_distribution" "main_distribution" {
   enabled             = true
   aliases             = [local.fqn, local.domain]
@@ -39,6 +44,10 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     target_origin_id       = aws_s3_bucket.frontend.id
     viewer_protocol_policy = "redirect-to-https"
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = data.aws_cloudfront_function.redirectIndex.arn
+    }
   }
 
   restrictions {
